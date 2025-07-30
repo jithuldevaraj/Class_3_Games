@@ -11,15 +11,22 @@ num2 = 0
 answer_var = tk.StringVar()
 result_var = tk.StringVar()
 question_var = tk.StringVar()
+current_digits = 1  # Default to 1-digit
 
 # Functions
 def generate_question(digits):
-    global num1, num2
+    global num1, num2, current_digits
+    current_digits = digits
     lower = 10**(digits-1)
     upper = (10**digits) - 1
     num1 = random.randint(lower, upper)
     num2 = random.randint(lower, upper)
     question_var.set(f"{num1} + {num2} =")
+    answer_var.set("")     # Clear input
+    result_var.set("")     # Clear result
+
+def next_question():
+    generate_question(current_digits)
 
 def check_answer():
     try:
@@ -43,6 +50,9 @@ tk.Button(root, text="Check", command=check_answer).grid(row=1, column=2, padx=5
 
 # Result label
 tk.Label(root, textvariable=result_var, font=('Arial', 24)).grid(row=2, column=1, pady=10)
+
+# Next button
+tk.Button(root, text="Next", command=next_question).grid(row=2, column=2, pady=10)
 
 # Digit buttons
 tk.Button(root, text="1 digit", width=10, command=lambda: generate_question(1)).grid(row=3, column=0, pady=10)
